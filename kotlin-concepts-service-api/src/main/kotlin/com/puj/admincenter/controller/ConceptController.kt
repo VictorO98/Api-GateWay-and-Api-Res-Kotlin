@@ -56,10 +56,12 @@ class ConceptController(private val conceptService: ConceptService){
             = conceptService.updateConcept(conceptDto)
 
     @DeleteMapping(
-            value = ["/deleteConcept"]
+            value = ["/deleteConcept"],
+            consumes = ["application/json"],
+            produces = ["application/json"]
     )
 
-    fun deleteConcept(@RequestParam(value = "CONCEPT_ID", required=true) CONCEPT_ID: String): ResponseEntity<*>
+    fun deleteConcept(@RequestParam(value = "CONCEPT_ID", required=false) CONCEPT_ID: String): ResponseEntity<*>
             = conceptService.deleteConcept(CONCEPT_ID)
 
 }
