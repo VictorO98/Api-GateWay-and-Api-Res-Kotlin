@@ -4,6 +4,7 @@ import com.puj.admincenter.domain.users.User
 import com.puj.admincenter.dto.users.UserDto
 import com.puj.admincenter.dto.users.CreateUserDto
 import com.puj.admincenter.dto.IdResponseDto
+import com.puj.admincenter.dto.login.UpdatePassDto
 import com.puj.admincenter.repository.users.UserRepository
 
 import org.springframework.data.domain.Pageable
@@ -43,18 +44,41 @@ class UserService(private val userRepository: UserRepository) {
             val messageError = "User with email: ${createUserDto.email} already exists."
             LOG.error(messageError)
             return ResponseEntity<Any>(messageError,
-                                       HttpStatus.CONFLICT)
+                    HttpStatus.CONFLICT)
         }
 
-        val user = User(email = createUserDto.email,
-                        name = createUserDto.name,
-                        password = createUserDto.password,
-                        username = createUserDto.username)
+        val user = User(
+                email = createUserDto.email,
+                name = createUserDto.name,
+                password = BCrypt.hashpw(createUserDto.password, BCrypt.gensalt()),
+                username = createUserDto.username)
         val userSaved = userRepository.save(user)
         LOG.info("User ${createUserDto.email} created with id ${userSaved.id}")
 
         val responseDto = IdResponseDto(userSaved.id.toLong())
         return ResponseEntity<IdResponseDto>(responseDto,
-                                             HttpStatus.CREATED)
+                HttpStatus.CREATED)
+    }
+
+    fun updatePassword(updatePassDto: UpdatePassDto): ResponseEntity<*> {
+        val user = userRepository.findUserByUserAndPassword(updatePassDto.username)
+        if (user != null) {
+            if (BCrypt.checkpw(updatePassDto.password, user.password)) {
+                val hashedNewPassword = BCrypt.hashpw(updatePassDto.newpassword, BCrypt.gensalt())
+                userRepository.updatePassword(updatePassDto.username, hashedNewPassword)
+                val correctMessage = "User ${updatePassDto.username} was updated."
+                LOG.info(correctMessage)
+                return ResponseEntity<Any>(correctMessage, HttpStatus.OK)
+            } else {
+                val messageError = "Your current password is not valid"
+                LOG.error(messageError)
+                return ResponseEntity<Any>(messageError, HttpStatus.CONFLICT)
+            }
+        } else {
+            val messageError = "User with username: ${updatePassDto.username} does not exist."
+            LOG.error(messageError)
+            return ResponseEntity<Any>(messageError, HttpStatus.NOT_FOUND)
+        }
     }
 }
+

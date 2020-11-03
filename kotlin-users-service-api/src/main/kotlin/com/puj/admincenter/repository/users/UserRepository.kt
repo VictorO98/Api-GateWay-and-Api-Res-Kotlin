@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Repository
@@ -19,10 +21,8 @@ interface UserRepository : JpaRepository<User, Int>,
         SELECT user
         FROM User user
         WHERE user.username = :username
-        AND user.password = :password
     """)
-    fun findUserByUserAndPassword(username: String,
-                                  password: String): User?
+    fun findUserByUserAndPassword(username: String): User?
 
     @Query("""
         SELECT COUNT(user) > 0
@@ -30,4 +30,13 @@ interface UserRepository : JpaRepository<User, Int>,
         WHERE user.email = :email
     """)
     fun existsByEmail(@Param("email") email: String): Boolean
+
+    @Transactional
+    @Modifying
+    @Query("""
+            UPDATE User user
+            SET user.password = :#{#newpassword}
+            WHERE user.username = :username
+        """)
+    fun updatePassword(username : String, newpassword : String)
 }

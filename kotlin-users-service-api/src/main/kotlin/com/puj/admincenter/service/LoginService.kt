@@ -34,19 +34,26 @@ class LoginService(val userRepository: UserRepository) {
     private val jwtExpiration: Long = 5
 
     fun login(loginDto: LoginDto): ResponseEntity<*> {
-        val user = userRepository.findUserByUserAndPassword(loginDto.username,
-                                                            loginDto.password)
+        val user = userRepository.findUserByUserAndPassword(loginDto.username)
         return if (user != null) {
             logger.info("found user $user")
-            val jwtToken = getJWTToken(loginDto.username)
-    
-            println("tokenJwt: $jwtToken")
+            if (BCrypt.checkpw(loginDto.password, user.password)){
+                logger.info("User and password correct")
+                val jwtToken = getJWTToken(loginDto.username)
 
-            val token =  TokenDto(jwtToken,
-                                  user.id)
-            logger.info("Token $token for user $user generated")
-            ResponseEntity<TokenDto>(token,
-                                     HttpStatus.OK)
+                println("tokenJwt: $jwtToken")
+
+                val token =  TokenDto(jwtToken,
+                        user.id)
+                logger.info("Token $token for user $user generated")
+                ResponseEntity<TokenDto>(token,
+                        HttpStatus.OK)
+            } else {
+                val message = "Incorrect username or password"
+                logger.error(message)
+                ResponseEntity<String>(message, HttpStatus.UNAUTHORIZED)
+            }
+
         } else {
             val message = "the user does not exist or is not enabled" 
             logger.error(message)
