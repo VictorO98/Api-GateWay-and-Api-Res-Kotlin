@@ -88,7 +88,7 @@ class ConceptService(private val conceptRepository: ConceptRepository){
 
     fun updateConcept(conceptDto: ConceptDto): ResponseEntity<*>{
         if (conceptRepository.existsByConceptId(conceptDto.CONCEPT_ID)) {
-            conceptRepository.updateByConceptId(conceptDto)
+            conceptRepository.updateByConceptId(conceptDto, conceptDto.CONCEPT_ID)
             LOG.info("Concept ${conceptDto.CONCEPT_ID} was updated.")
             return ResponseEntity<Any>(HttpStatus.OK)
 
@@ -102,8 +102,9 @@ class ConceptService(private val conceptRepository: ConceptRepository){
     fun deleteConcept(CONCEPT_ID:String): ResponseEntity<*>{
         if (conceptRepository.existsByConceptId(CONCEPT_ID)) {
             conceptRepository.deleteByConceptId(CONCEPT_ID)
-            LOG.info("Concept ${CONCEPT_ID} was deleted.")
-            return ResponseEntity<Any>(HttpStatus.OK)
+            val message = "Concept ${CONCEPT_ID} was deleted."
+            LOG.info(message)
+            return ResponseEntity<Any>(message, HttpStatus.OK)
 
 
         }

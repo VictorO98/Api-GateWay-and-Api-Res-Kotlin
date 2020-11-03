@@ -57,9 +57,9 @@ interface ConceptRepository : JpaRepository<ConceptsGroup, Long>,
                 conceptsGroup.VALID_START_DATE = :#{#conceptDto.VALID_START_DATE},
                 conceptsGroup.VALID_END_DATE = :#{#conceptDto.VALID_END_DATE},
                 conceptsGroup.INVALID_REASON = :#{#conceptDto.INVALID_REASON}
-            WHERE conceptsGroup.CONCEPT_ID = :#{#conceptDto.CONCEPT_ID}
+            WHERE conceptsGroup.CONCEPT_ID = :CONCEPT_ID
         """)
-    fun updateByConceptId(conceptDto: ConceptDto)
+    fun updateByConceptId(conceptDto: ConceptDto, CONCEPT_ID: String)
 
 
     @Transactional
@@ -69,7 +69,7 @@ interface ConceptRepository : JpaRepository<ConceptsGroup, Long>,
         SET conceptsGroup.DROP_ENABLE = 1
         WHERE conceptsGroup.CONCEPT_ID = :CONCEPT_ID
     """)
-    fun deleteByConceptId(@Param("CONCEPT_ID") CONCEPT_ID: String): Boolean
+    fun deleteByConceptId(@Param("CONCEPT_ID") CONCEPT_ID: String)
 
 }
 

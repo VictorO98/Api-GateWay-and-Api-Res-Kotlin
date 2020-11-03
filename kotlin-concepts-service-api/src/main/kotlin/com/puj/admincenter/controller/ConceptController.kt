@@ -34,7 +34,8 @@ class ConceptController(private val conceptService: ConceptService){
     fun getAllConceptsGroups(@RequestParam(value = "VOCABULARY_ID", required=false) VOCABULARY_ID: String?,
                              @RequestParam(value = "CONCEPT_ID", required=false) CONCEPT_ID: String?,
                              @RequestParam(value = "DOMAIN_ID", required=false) DOMAIN_ID: String?,
-                             @RequestParam(value = "SHORT_DESC", required=false) SHORT_DESC: String?): ResponseEntity<*> {
+                             @RequestParam(value = "SHORT_DESC", required=false) SHORT_DESC: String?,
+                             @RequestHeader(value="authorization", required = true) authorization: String): ResponseEntity<*> {
         return conceptService.getAllConceptsGroups(VOCABULARY_ID, CONCEPT_ID, DOMAIN_ID, SHORT_DESC)
     }
 
@@ -43,7 +44,8 @@ class ConceptController(private val conceptService: ConceptService){
             consumes = ["application/json"],
             produces = ["application/json"]
     )
-    fun createConcept(@RequestBody @Valid conceptDto: ConceptDto): ResponseEntity<*>
+    fun createConcept(@RequestBody @Valid conceptDto: ConceptDto,
+                      @RequestHeader(value="authorization", required = true) authorization: String): ResponseEntity<*>
             = conceptService.createConcept(conceptDto)
 
     @PutMapping(
@@ -52,7 +54,8 @@ class ConceptController(private val conceptService: ConceptService){
             produces = ["application/json"]
     )
 
-    fun updateConcept(@RequestBody @Valid conceptDto: ConceptDto): ResponseEntity<*>
+    fun updateConcept(@RequestBody @Valid conceptDto: ConceptDto,
+                      @RequestHeader(value="authorization", required = true) authorization: String): ResponseEntity<*>
             = conceptService.updateConcept(conceptDto)
 
     @DeleteMapping(
@@ -61,7 +64,8 @@ class ConceptController(private val conceptService: ConceptService){
             produces = ["application/json"]
     )
 
-    fun deleteConcept(@RequestParam(value = "CONCEPT_ID", required=false) CONCEPT_ID: String): ResponseEntity<*>
+    fun deleteConcept(@RequestParam(value = "CONCEPT_ID", required=false) CONCEPT_ID: String,
+                      @RequestHeader(value="authorization", required = true) authorization: String): ResponseEntity<*>
             = conceptService.deleteConcept(CONCEPT_ID)
 
 }
