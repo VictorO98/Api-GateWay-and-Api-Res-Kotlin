@@ -1,10 +1,13 @@
 # Api GateWay & Api Res Kotlin
-_Api Gateway generator for user consulting with a given token for a JWT query_
+_Api Gateway generator for user consulting with a given token for a JWT query._
+
+![](Arquitectura_Proyecto.png)
 
 ## Content
-* **kotlin-concepts-service-api** - Folder containing Concepts Services files
-* **kotlin-users-service-api** - Folder containing User Services files
-* **manual_tests** - Folder containing python test files and a json output file
+* **kotlin-concepts-service-api** - Folder containing Concepts Services files.
+* **kotlin-users-service-api** - Folder containing User Services files.
+* **manual_tests** - Folder containing python test files and a json output file.
+* **Arquitectura_Proyecto.png** - Project Architecture Diagram.
 
 ## Built with
 * [Kotlin](https://kotlinlang.org/) - For programing and testing our software.
