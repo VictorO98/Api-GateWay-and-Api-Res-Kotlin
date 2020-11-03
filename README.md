@@ -4,6 +4,7 @@ _Api Gateway generator for user consulting with a given token for a JWT query._
 ![](Arquitectura_Proyecto.png)
 
 ## Content
+* **java-gateway** - Folder containing API gateway files.
 * **kotlin-concepts-service-api** - Folder containing Concepts Services files.
 * **kotlin-users-service-api** - Folder containing User Services files.
 * **manual_tests** - Folder containing python test files and a json output file.
@@ -12,6 +13,7 @@ _Api Gateway generator for user consulting with a given token for a JWT query._
 ## Built with
 * [Kotlin](https://kotlinlang.org/) - For programing and testing our software.
 * [Python 3.6](https://www.python.org/downloads/) - For programing and testing our software.
+* [Java](https://www.java.com/es/download/) - For programming our software.
 
 ## Credits
 Final proyect for the subject "Web Services Development" at Pontificia Universidad Javeriana Cali, Colombia, 2020.
