@@ -64,7 +64,7 @@ class ConceptController(private val conceptService: ConceptService){
             produces = ["application/json"]
     )
 
-    fun deleteConcept(@RequestParam(value = "CONCEPT_ID", required=false) CONCEPT_ID: String,
+    fun deleteConcept(@RequestParam(value = "CONCEPT_ID", required=true) CONCEPT_ID: String,
                       @RequestHeader(value="authorization", required = true) authorization: String): ResponseEntity<*>
             = conceptService.deleteConcept(CONCEPT_ID)
 
